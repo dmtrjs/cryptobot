@@ -1,12 +1,10 @@
 require 'discordrb'
 require 'dotenv/load'
 
-bot = Discordrb::Bot.new token: ENV['BOT_TOKEN']
+bot = Discordrb::Commands::CommandBot.new token: ENV['BOT_TOKEN'], prefix: '!'
 
-puts "This bot's invite URL is #{bot.invite_url}."
-
-bot.message(content: '!ping') do |event|
-  event.respond 'Pong!'
-end
+bot.command :me do |event|
+    event.user.name
+  end
 
 bot.run
