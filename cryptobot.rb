@@ -6,9 +6,9 @@ BASE_URL = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion'.freeze
 
 bot = Discordrb::Commands::CommandBot.new token: ENV['BOT_TOKEN'], prefix: '!'
 
-bot.command :btc do |event|
-  puts "Invite url: #{bot.invite_url}"
+puts "Invite url: #{bot.invite_url}"
 
+bot.command :btc do |event|
   params = { symbol: 'BTC', amount: 1 }
 
   response = Faraday.get(BASE_URL, params, { 'X-CMC_PRO_API_KEY' => ENV['COINMARKET_API_KEY']})
