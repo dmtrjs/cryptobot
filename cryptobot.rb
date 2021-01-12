@@ -19,7 +19,7 @@ bot.command :btc do |event|
   price = data[:price]
   last_updated = data[:last_updated]
 
-  event << "Current BTC price is: #{price} USD"
+  event << "Current BTC price is: ~#{price.round(2)} USD"
   event << "Last updated at: #{DateTime.parse(last_updated).strftime('%Y %B %d, %H:%M UTC')}"
 end
 
