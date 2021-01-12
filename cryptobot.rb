@@ -40,9 +40,8 @@ end
 
 bot.run :async
 
-channels = bot.find_channel('crypto-prices')
-
 scheduler.every '10h' do
+  channels = bot.find_channel('crypto-prices')
   if channels.any?
     channels.each do |channel|
       send_embed_to_channel(channel)
