@@ -19,8 +19,12 @@ bot.command :btc do |event|
   price = data[:price]
   last_updated = data[:last_updated]
 
-  event << "Current BTC price is: ~#{price.round(2)} USD"
-  event << "Last updated at: #{DateTime.parse(last_updated).strftime('%Y %B %d, %H:%M UTC')}"
+  event.channel.send_embed('BTC price') do |embed|
+    embed.colour = '#0099ff'
+    embed.title = 'BTC Price'
+    embed.add_field(name: 'Price',  value: "#{price.round(2)} USD")
+    embed.add_field(name: 'Last updated at', value: DateTime.parse(last_updated).strftime('%Y %B %d, %H:%M UTC'))
+  end
 end
 
 bot.run
