@@ -21,7 +21,7 @@ bot.command :btc do |event|
   price = data[:price]
   last_updated = data[:last_updated]
 
-  event.channel.send_embed('BTC price') do |embed|
+  event.channel.send_embed do |embed|
     embed.colour = '#0099ff'
     embed.title = 'BTC Price'
     embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Crypto Bot',
