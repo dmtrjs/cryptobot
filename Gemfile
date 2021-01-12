@@ -1,0 +1,2 @@
+gem 'discordrb'
+gem 'dotenv'
