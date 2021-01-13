@@ -30,7 +30,7 @@ def send_embed_to_channel(channel, symbol)
     embed.title = "#{symbol} Price"
     embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Crypto Bot',
                                                         icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/1200px-BTC_Logo.svg.png')
-    embed.add_field(name: 'Price',  value: "#{price.round(2)} USD")
+    embed.add_field(name: 'Price',  value: "#{price.to_f.round(2)} USD")
     embed.add_field(name: 'Last updated at', value: DateTime.parse(last_updated).strftime('%Y %B %d, %H:%M UTC'))
   end
 end
