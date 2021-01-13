@@ -36,7 +36,7 @@ def send_embed_to_channel(channel, symbol)
     embed.add_field(name: 'Price',  value: "#{price.round(2)} USD")
     embed.add_field(name: 'Last updated at', value: DateTime.parse(last_updated).strftime('%Y %B %d, %H:%M UTC'))
     embed.add_field(name: 'Hourly change (USD)',  value: "#{hourly_change_usd.round(2)} USD")
-    embed.add_field(name: 'Hourly change (%)',  value: "#{hourly_change_pct}%")
+    embed.add_field(name: 'Hourly change (%)',  value: "#{hourly_change_pct.round(2)}%")
   end
 end
 
