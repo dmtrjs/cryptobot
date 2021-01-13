@@ -12,7 +12,7 @@ def send_embed_to_channel(channel, symbol)
 
   symbol = symbol.upcase
 
-  params = { ids: symbol, convert: 'USD', key: ENV['NOMICS_API_KEY'] }
+  params = { ids: symbol, convert: 'USD', key: ENV['NOMICS_API_KEY'], interval: '1h' }
 
   response = Faraday.get("#{BASE_URL}/currencies/ticker", params)
 
@@ -22,16 +22,21 @@ def send_embed_to_channel(channel, symbol)
 
   data = response_body.first
 
+  price = data[:price].to_f
+  last_updated = data[:price_timestamp]
+  hourly_change_usd = data['1h'.to_sym][:price_change].to_f
+  hourly_change_pct = data['1h'.to_sym][:price_change_pct].to_f * 100
+
   channel.send_embed do |embed|
-    price = data[:price]
-    last_updated = data[:price_timestamp]
 
     embed.colour = '#0099ff'
     embed.title = "#{symbol} Price"
     embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Crypto Bot',
                                                         icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/1200px-BTC_Logo.svg.png')
-    embed.add_field(name: 'Price',  value: "#{price.to_f.round(2)} USD")
+    embed.add_field(name: 'Price',  value: "#{price.round(2)} USD")
     embed.add_field(name: 'Last updated at', value: DateTime.parse(last_updated).strftime('%Y %B %d, %H:%M UTC'))
+    embed.add_field(name: 'Hourly change (USD)',  value: "#{hourly_change_usd.round(2)} USD")
+    embed.add_field(name: 'Hourly change (%)',  value: "#{hourly_change_pct}%")
   end
 end
 
