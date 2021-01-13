@@ -50,6 +50,7 @@ scheduler.every '1m' do
       pp channel
 
      send_embed_to_channel(channel)
+    end
   end
 end
 
