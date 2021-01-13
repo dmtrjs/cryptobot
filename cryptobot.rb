@@ -7,8 +7,10 @@ scheduler = Rufus::Scheduler.new
 
 BASE_URL = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion'.freeze
 
-def send_embed_to_channel(channel)
-  params = { symbol: 'BTC', amount: 1 }
+def send_embed_to_channel(channel, symbol)
+  return if channel.nil? || symbol.nil?
+
+  params = { symbol: symbol, amount: 1 }
 
   response = Faraday.get(BASE_URL, params, { 'X-CMC_PRO_API_KEY' => ENV['COINMARKET_API_KEY']})
 
@@ -22,7 +24,7 @@ def send_embed_to_channel(channel)
     last_updated = data[:last_updated]
 
     embed.colour = '#0099ff'
-    embed.title = 'BTC Price'
+    embed.title = "#{symbol.upcase} Price"
     embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Crypto Bot',
                                                         icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/1200px-BTC_Logo.svg.png')
     embed.add_field(name: 'Price',  value: "#{price.round(2)} USD")
@@ -35,7 +37,11 @@ bot = Discordrb::Commands::CommandBot.new token: ENV['BOT_TOKEN'], prefix: '!'
 puts "Invite url: #{bot.invite_url}"
 
 bot.command :btc do |event|
-  send_embed_to_channel(event.channel)
+  send_embed_to_channel(event.channel, 'btc')
+end
+
+bot.command :eth do |event|
+  send_embed_to_channel(event.channel, 'eth')
 end
 
 bot.run :async
@@ -50,7 +56,7 @@ scheduler.every '27m' do
       pp channel
 
       begin
-        send_embed_to_channel(channel)
+        send_embed_to_channel(channel, 'btc')
       rescue Discordrb::Errors::NoPermission
         next
       end
