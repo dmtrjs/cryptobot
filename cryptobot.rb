@@ -40,7 +40,7 @@ end
 
 bot.run :async
 
-scheduler.every '1h' do
+scheduler.every '30m' do
   channels = bot.find_channel('crypto-prices')
 
   if channels.any?
