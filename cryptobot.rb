@@ -40,8 +40,8 @@ end
 
 bot.run :async
 
-scheduler.every '30m' do
-  "Running scheduler"
+scheduler.every '15m' do
+  puts "Running scheduler"
 
   channels = bot.find_channel('crypto-prices')
 
