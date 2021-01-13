@@ -57,6 +57,7 @@ scheduler.every '27m' do
 
       begin
         send_embed_to_channel(channel, 'btc')
+        send_embed_to_channel(channel, 'eth')
       rescue Discordrb::Errors::NoPermission
         next
       end
