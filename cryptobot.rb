@@ -49,7 +49,11 @@ scheduler.every '15m' do
     channels.each do |channel|
       pp channel
 
-     send_embed_to_channel(channel)
+      begin
+        send_embed_to_channel(channel)
+      rescue Discordrb::Errors::NoPermission
+        next
+      end
     end
   end
 end
