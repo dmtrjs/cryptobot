@@ -5,26 +5,29 @@ require 'rufus-scheduler'
 
 scheduler = Rufus::Scheduler.new
 
-BASE_URL = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion'.freeze
+BASE_URL = 'https://api.nomics.com/v1'.freeze
 
 def send_embed_to_channel(channel, symbol)
   return if channel.nil? || symbol.nil?
 
-  params = { symbol: symbol, amount: 1 }
+  symbol = symbol.upcase
 
-  response = Faraday.get(BASE_URL, params, { 'X-CMC_PRO_API_KEY' => ENV['COINMARKET_API_KEY']})
+  params = { ids: symbol, convert: 'USD', key: ENV['NOMICS_API_KEY'] }
+
+  response = Faraday.get("#{BASE_URL}/currencies/ticker", params)
 
   return unless response.success?
 
   response_body = JSON.parse(response.body, symbolize_names: true)
 
+  data = response_body.first
+
   channel.send_embed do |embed|
-    data = response_body[:data][:quote][:USD]
     price = data[:price]
-    last_updated = data[:last_updated]
+    last_updated = data[:price_timestamp]
 
     embed.colour = '#0099ff'
-    embed.title = "#{symbol.upcase} Price"
+    embed.title = "#{symbol} Price"
     embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Crypto Bot',
                                                         icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/1200px-BTC_Logo.svg.png')
     embed.add_field(name: 'Price',  value: "#{price.round(2)} USD")
