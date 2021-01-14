@@ -12,7 +12,7 @@ def send_embed_to_channel(channel, symbol)
 
   symbol = symbol.upcase
 
-  params = { ids: symbol, convert: 'USD', key: ENV['NOMICS_API_KEY'], interval: '1h' }
+  params = { ids: symbol, convert: 'USD', key: ENV['NOMICS_API_KEY'], interval: '1h,1d' }
 
   response = Faraday.get("#{BASE_URL}/currencies/ticker", params)
 
@@ -26,6 +26,8 @@ def send_embed_to_channel(channel, symbol)
   last_updated = data[:price_timestamp]
   hourly_change_usd = data['1h'.to_sym][:price_change].to_f
   hourly_change_pct = data['1h'.to_sym][:price_change_pct].to_f * 100
+  daily_change_usd = data['1d'.to_sym][:price_change].to_f
+  daily_change_pct = data['1d'.to_sym][:price_change_pct].to_f * 100
 
   channel.send_embed do |embed|
 
@@ -37,6 +39,8 @@ def send_embed_to_channel(channel, symbol)
     embed.add_field(name: 'Last updated at', value: DateTime.parse(last_updated).strftime('%Y %B %d, %H:%M UTC'))
     embed.add_field(name: 'Hourly change (USD)',  value: "#{hourly_change_usd.round(2)} USD")
     embed.add_field(name: 'Hourly change (%)',  value: "#{hourly_change_pct.round(2)}%")
+    embed.add_field(name: 'Daily change (USD)',  value: "#{daily_change_usd.round(2)} USD")
+    embed.add_field(name: 'Daily change (%)',  value: "#{daily_change_pct.round(2)}%")
   end
 end
 
