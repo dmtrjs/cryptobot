@@ -5,3 +5,7 @@ gem 'discordrb'
 gem 'dotenv'
 gem 'faraday'
 gem 'rufus-scheduler'
+
+group :development do
+  gem 'rubocop', require: false
+end
