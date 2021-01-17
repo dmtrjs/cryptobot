@@ -30,8 +30,7 @@ def send_embed_to_channel(channel, symbol)
   daily_change_pct = data['1d'.to_sym][:price_change_pct].to_f * 100
 
   channel.send_embed do |embed|
-
-    embed.colour = '#0099ff'
+    embed.colour = '#9580FF'
     embed.title = "#{symbol} Price"
     embed.author = Discordrb::Webhooks::EmbedAuthor.new(name: 'Crypto Bot',
                                                         icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/1200px-BTC_Logo.svg.png')
