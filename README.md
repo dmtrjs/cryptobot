@@ -24,3 +24,5 @@ Send any [supported command](#supported-commands) in your discord server and you
 `!btc` - get current BTC price in USD.
 
 `!eth` - get current ETH price in USD.
+
+`!ada` - get current ADA price in USD.

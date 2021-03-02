@@ -55,6 +55,10 @@ bot.command :eth do |event|
   send_embed_to_channel(event.channel, 'eth')
 end
 
+bot.command :ada do |event|
+  send_embed_to_channel(event.channel, 'ada')
+end
+
 bot.run :async
 
 scheduler.every '27m' do
@@ -67,8 +71,8 @@ scheduler.every '27m' do
       pp channel
 
       begin
-        send_embed_to_channel(channel, 'btc')
-        send_embed_to_channel(channel, 'eth')
+        coins = %w[btc eth ada]
+        coins.each { |coin| send_embed_to_channel(channel, coin) }
       rescue Discordrb::Errors::NoPermission
         next
       end
